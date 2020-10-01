@@ -1,0 +1,16 @@
+@import '../variables';
+
+.main__history {
+  & div {
+    display: flex;
+  }
+}
+
+.main__close-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
