@@ -7,8 +7,8 @@ function App() {
   return (
     <div className="wrapper">
       <Switch>
+        <Route path="/" exact component={Auth} />
         <Route path="/" component={Main} />
-        <Route path="/auth" component={Auth} />
 
         <Redirect to="/auth" />
       </Switch>

@@ -5,7 +5,9 @@ import Loader from './Loader';
 const Button = props => {
   let flag = false;
   return (
-    <button className={classNames('button')}>{flag ? <Loader /> : props.children}</button>
+    <button className={classNames('button')} onClick={props.onClick} disabled={props.disabled}>
+      {flag ? <Loader /> : props.children}
+    </button>
   );
 };
 

@@ -1,15 +1,15 @@
 import React from 'react';
-import classNames from 'classnames'
+import classNames from 'classnames';
 
 import meh from '../assets/img/meh.png';
 
-const Error = () => {
+const Error = props => {
   return (
     <div className={classNames('error')}>
       <img alt="meh" src={meh} />
       <div>
         <div>Вход не вышел </div>
-        <footer>id: "error/auth/failed", explain: "wrong_credentials"</footer>
+        <footer>{JSON.stringify(props.textError)}</footer>
       </div>
     </div>
   );

@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {Fragment, useState} from 'react';
+import classNames from 'classnames'
 
 const Request = () => {
   const action = false;
+  const [popupIsOpen, setPopupIsOpen] = useState(false);
+  const [wrong, setWrong] = useState(true);
+
+  const togglePopup = () => {
+    setPopupIsOpen(!popupIsOpen);
+  };
+
   return (
-    <div className="request">
+    <div className={classNames('request', {wrong})}>
       <div className="request__content">
-        <div className="request__indicator"></div>
+        <div className='request__indicator'></div>
         <div>
           {action ? (
             <span className="request__action">Скопировано</span>
@@ -13,7 +21,7 @@ const Request = () => {
             <span>send</span>
           )}
         </div>
-        <button>
+        <button onClick={togglePopup}>
           <svg
             width="4"
             height="18"
@@ -27,14 +35,19 @@ const Request = () => {
         </button>
       </div>
 
-      <div className="dropdown">
-        <ul className="dropdown__content">
-          <li>Выполнить</li>
-          <li>Скопировать</li>
-          <div></div>
-          <li>Удалить</li>
-        </ul>
-      </div>
+      {popupIsOpen ? (
+        <Fragment>
+          <div className="backdrop" onClick={togglePopup}></div>
+          <div className="dropdown">
+            <ul className="dropdown__content">
+              <li>Выполнить</li>
+              <li>Скопировать</li>
+              <div></div>
+              <li>Удалить</li>
+            </ul>
+          </div>
+        </Fragment>
+      ) : null}
     </div>
   );
 };
