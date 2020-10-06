@@ -1,6 +1,12 @@
 import sendsey from '../../sendsay/sendsay';
 import sendsay from '../../sendsay/sendsay';
-import {AUTH_SUCCESS, AUTH_START, AUTH_ERROR, AUTH_LOGOUT, AUTH_RESTORE_SESSION} from './actionTypes';
+import {
+  AUTH_SUCCESS,
+  AUTH_START,
+  AUTH_ERROR,
+  AUTH_LOGOUT,
+  // AUTH_RESTORE_SESSION,
+} from './actionTypes';
 
 // async function getAuthData() {
 //   let authData = {};
@@ -41,7 +47,9 @@ export function auth(login, sublogin, password) {
               email: res.list['about.owner.email'][0],
               sublogin: res.list['about.id'],
             };
-            document.cookie = `sendsay_session=${authData.session}`;
+            document.cookie = `sendsay_session=${authData.session}; max-age=3600`;
+            document.cookie = `sendsay_email=${authData.email}; max-age=3600`;
+            document.cookie = `sendsay_sublogin=${authData.sublogin}; max-age=3600`;
             dispatch(authSuccess(authData));
           });
 
@@ -74,12 +82,12 @@ export function authSuccess(authData) {
     authData,
   };
 }
-export function authRestoreSession(session) {
-  return {
-    type: AUTH_RESTORE_SESSION,
-    session,
-  };
-}
+// export function authRestoreSession(session) {
+//   return {
+//     type: AUTH_RESTORE_SESSION,
+//     session,
+//   };
+// }
 
 export function authError(responseError) {
   return {
@@ -89,12 +97,19 @@ export function authError(responseError) {
 }
 
 export function autoLogin() {
-  return dispatch => {
+  return async dispatch => {
     sendsay.setSessionFromCookie();
     const session = sendsey.session;
+    const email = (document.cookie.match(`(^|; )sendsay_email=([^;]*)`) || 0)[2];
+    const sublogin = (document.cookie.match(`(^|; )sendsay_sublogin=([^;]*)`) || 0)[2];
 
     if (session) {
-      dispatch(authRestoreSession(session));
+      const authData = {
+        session,
+        email,
+        sublogin,
+      };
+      dispatch(authSuccess(authData));
     } else {
       dispatch(logout());
     }
@@ -102,7 +117,7 @@ export function autoLogin() {
 }
 
 export function logout() {
-  document.cookie = `sendsay_session=`;
+  document.cookie = `sendsay_session=; max-age=-1`;
   return {
     type: AUTH_LOGOUT,
   };
