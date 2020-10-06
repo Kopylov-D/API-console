@@ -30,11 +30,16 @@
     margin-right: 23px;
   }
 
+  & a {
+    color: inherit;
+  }
+
   & button {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 7px;
+    // color: inherit;
 
     &:hover {
       color: $c-blue;

@@ -1,19 +1,48 @@
-import React from 'react';
+import React, {Fragment, useEffect} from 'react';
+import {connect} from 'react-redux';
 import {Redirect, Route, Switch, withRouter} from 'react-router';
+import { Logout } from './components';
 
 import {Auth, Main} from './containers';
+import {autoLogin} from './store/actions/auth';
 
-function App() {
+function App(props) {
+  useEffect(() => {
+    props.autoLogin();
+  }, []);
+
   return (
     <div className="wrapper">
       <Switch>
-        <Route path="/" exact component={Auth} />
-        <Route path="/" component={Main} />
+        {props.isAuth ? (
+          <Fragment>
+            <Route exact path="/" component={Main} />
+            <Route path="/logout" component={Logout}/>
+            <Redirect to="/" />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Route path="/auth" component={Auth} />
+            <Redirect to="/auth" />
+          </Fragment>
+        )}
 
-        <Redirect to="/auth" />
+        <Redirect to="/" />
       </Switch>
     </div>
   );
 }
 
-export default withRouter(App);
+const mapStateToProps = state => {
+  return {
+    isAuth: state.auth.isAuth,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    autoLogin: () => dispatch(autoLogin()),
+  };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

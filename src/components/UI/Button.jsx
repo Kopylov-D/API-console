@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import Loader from './Loader';
 
 const Button = props => {
-  let flag = false;
+
   return (
     <button className={classNames('button')} onClick={props.onClick} disabled={props.disabled}>
-      {flag ? <Loader /> : props.children}
+      {props.isLoading ? <Loader /> : props.children}
     </button>
   );
 };
