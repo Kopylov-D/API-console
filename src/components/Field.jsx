@@ -1,52 +1,64 @@
 import React, {Fragment, useEffect} from 'react';
-import {UnControlled as CodeMirror} from 'react-codemirror2';
+import {Controlled as Editor} from 'react-codemirror2';
 
 import 'codemirror/addon/hint/javascript-hint';
 import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/edit/trailingspace';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
-import 'codemirror/theme/monokai.css';
+// import 'codemirror/addon/edit/trailingspace';
 
-const Field = () => {
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/lib/codemirror.css';
+
+import {Button} from './UI';
+
+const Field = props => {
+  const {value, onChange, format} = props;
   // useEffect(() => {
   //   const editor = CodeMirror.fromTextArea(document.querySelector('.textarea'));
   // }, []);
-  const textRef = React.useRef();
-  useEffect(() => {}, []);
+  // const textRef = React.useRef();
+  // useEffect(() => {}, []);
 
   // console.log(codemirror())
+
+  const handleChange = (editor, data, value) => {
+    // editor.showTrailingSpace()
+    onChange(value);
+  };
   return (
     <Fragment>
-      <CodeMirror
+      <Editor
         className="field"
-        value="I ♥ react-codemirror2"
+        value={value}
+        onBeforeChange={handleChange}
         options={{
           mode: 'javascript',
+          lint: true,
           tabSize: 2,
-          sizerWidth: '100px',
+          lineWrapping: true,
           autofocus: true,
           autoCloseBrackets: true,
           showTrailingSpace: true,
+          autocorrect: true,
+          // viewportMargin: 100,
 
+          // sizerWidth: '100px',
           // readOnly: true
 
           // theme: 'monokai',
           // lineNumbers: true
         }}
-        display={
-          {
-            // blinker: 29
-          }
-        }
+        display={{}}
         // options={{
         // mode: 'xml',
         // theme: 'material',
         // lineNumbers: true,
         // }}
-        onChange={(editor, data, value) => {
-          console.log(editor);
-        }}
+        // onChange={(editor, data, value) => {
+        //   console.log(editor.display.barHeight);
+        //   console.log(beautify(value));
+          // editor.execCommand(selectAll)
+        // }}
+        // execCommand={selectAll}
       />
       {/* <div ref={textRef} className="field">
         <label htmlFor={'label'}>Запрос:</label>
@@ -54,6 +66,7 @@ const Field = () => {
         {/* <div> */}
       {/* <textarea  className="textarea"></textarea> */}
       {/* </div> */}
+      <Button onClick={format}>FormatTest</Button>
     </Fragment>
   );
 };

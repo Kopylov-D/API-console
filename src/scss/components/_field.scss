@@ -3,15 +3,17 @@
 
 .field {
   position: relative;
-  width: 100%;
+  width: 100% ;
   margin: 0 10px;
-  // height: 100%;
+  height: 100%;
   // bottom: 50px;
 
   & label {
     color: #999999;
     margin-bottom: 3px;
   }
+
+
 
   & textarea {
     // position: absolute;
@@ -27,4 +29,8 @@
     // box-sizing: border-box;
     border-radius: 5px;
   }
+}
+
+.CodeMirror {
+  height: 100%;
 }
