@@ -1,13 +1,23 @@
 import React from 'react';
+import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Logo} from './UI';
 
 const Header = () => {
-  const full = false;
+  const [fullScreen, setFullScreen] = useState(false);
 
   const {authData} = useSelector(({auth}) => auth);
-  console.log(authData)
+
+  const enableFullScreen = () => {
+    if (fullScreen) {
+      setFullScreen(false);
+      document.exitFullscreen();
+    } else {
+      setFullScreen(true);
+      document.documentElement.requestFullscreen();
+    }
+  };
 
   return (
     <header className="main__header">
@@ -17,7 +27,7 @@ const Header = () => {
       </div>
       <div className="main__user-panel">
         <div>
-          {authData.email} : {authData.sublogin}
+          {authData.email} {authData.sublogin ? `: ${authData.sublogin}` : null}
         </div>
         <div>
           <Link to="/logout">
@@ -55,8 +65,8 @@ const Header = () => {
           </Link>
         </div>
 
-        {full ? (
-          <button>
+        <button onClick={enableFullScreen}>
+          {fullScreen ? (
             <svg
               width="20"
               height="20"
@@ -71,9 +81,7 @@ const Header = () => {
                 strokeLinejoin="round"
               />
             </svg>
-          </button>
-        ) : (
-          <button>
+          ) : (
             <svg
               width="20"
               height="20"
@@ -88,8 +96,8 @@ const Header = () => {
                 strokeLinejoin="round"
               />
             </svg>
-          </button>
-        )}
+          )}
+        </button>
       </div>
     </header>
   );

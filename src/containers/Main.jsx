@@ -8,7 +8,7 @@ const Main = () => {
       <History />
       <div className='main__fields'>
         <Field />
-        <div>:</div>
+        <div>:</div> 
         <Field />
       </div>
       <Footer/>

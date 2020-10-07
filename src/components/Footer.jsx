@@ -1,12 +1,18 @@
 import React from 'react';
 import {Button} from './UI';
 
-import formatIcon from '../assets/img/format-icon.svg';
+import sendsey from '../sendsay/sendsay';
 
 const Footer = () => {
+  const test = () => {
+    sendsey.request({action: 'pong'}).then(res => {
+      console.log(res);
+    });
+  };
   return (
     <footer className="main__footer">
       <Button>Отправить</Button>
+      <Button onClick={test}>Тест</Button>
       <div>@link-to-your-github</div>
       <button className="format-btn">
         <svg

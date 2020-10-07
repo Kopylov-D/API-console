@@ -45,7 +45,8 @@ export function auth(login, sublogin, password) {
             const authData = {
               session: sendsay.session,
               email: res.list['about.owner.email'][0],
-              sublogin: res.list['about.id'],
+              // sublogin: res.list['about.id'],
+              sublogin,
             };
             document.cookie = `sendsay_session=${authData.session}; max-age=3600`;
             document.cookie = `sendsay_email=${authData.email}; max-age=3600`;
