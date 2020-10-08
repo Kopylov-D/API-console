@@ -104,6 +104,9 @@ body {
 
   &__fields {
     display: flex;
+    width: 100%;
+    // box-sizing: inline-box;
+    // display: table;
 
     // height: 100%;
     position: absolute;

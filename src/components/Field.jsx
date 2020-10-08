@@ -28,7 +28,7 @@ const Field = props => {
     console.log('data');
   };
   return (
-    <div className={classNames('field', `${classss}`)} style={{width}}>
+    <div className={classNames('field', `${classss}`)} style={{width: width&&width}}>
       <Editor
         value={value}
         onBeforeChange={handleChange}

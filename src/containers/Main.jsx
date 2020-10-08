@@ -6,11 +6,9 @@ import {useEffect} from 'react';
 
 const Main = () => {
   const [requestValue, setRequestValue] = useLocalStorage();
-  const [width, setWidth] = useState(550);
+  const [width, setWidth] = useState(100);
   const [X, setX] = useState(0);
   const [ch, setCh] = useState(false);
-
-  const elemRef = useRef ();
 
   const format = () => {
     console.log('format');
@@ -18,64 +16,48 @@ const Main = () => {
     setRequestValue(beautify(requestValue));
   };
 
-  // useEffect(() => {}, []);
-
   function setInitialX(e) {
     setCh(true);
-    setX(e.pageX);
-  }
-
-  function cols(e) {
-    // const wid = document.clientX;
-    // const w = e.pageX;
-    // console.log(w);
-    // console.log(wid);
+    setX(e.clientX);
   }
 
   function resize(e) {
     if (ch) {
-      const x = e.pageX
-      // console.log('move');
-      if (x < X) {
-        console.log('epage-')
-        setWidth(width => width-X+x);
-      } else {
-        console.log('epage++')
+      // console.log('resize');
 
-        setWidth(width => width+x-X);
-      }
+      const x = e.clientX;
+      // console.log('x', x);
+
+      setX(x);
+      const delta = x - X;
+      setWidth(width => width + delta);
+
+      // if (x < X) {
+      //   const delta = X - x
+      //   setX(x)
+      //   console.log('delta', delta)
+      //   setWidth(width => width-delta );
+      // } else {
+      //   const delta = x - X
+      //   setX(x)
+
+      //   console.log('delta', delta)
+
+      //   setWidth(width => width+delta);
+      // }
     }
     // }
   }
 
-  // function stopResize(e) {
-  //   window.removeEventListener('mousemove', Resize, false);
-  //   window.removeEventListener('mouseup', stopResize, false);
-  // }
-
-  // const initResize = () => {
-  //   window.addEventListener('mousemove', Resize, false);
-  //   window.addEventListener('mouseup', stopResize, false);
-  // };
-
   function onclick(e) {
-    console.log(e.pageX)
+    console.log(e.clientX);
   }
 
   return (
     <div>
       <Header />
       <History />
-      <div
-        ref={elemRef}
-        
-        className="main__fields"
-        onMouseDown={setInitialX}
-        onMouseUp={() => setCh(false)}
-        onMouseMove={resize}
-        // onClick={onclick}
-        // onMouseMove={resize}
-      >
+      <div className="main__fields" onClick={onclick} onMouseMove={resize}>
         <Field
           value={requestValue}
           onChange={setRequestValue}
@@ -83,22 +65,15 @@ const Main = () => {
           width={`${width}px`}
           classss={'request'}
         />
-        <div
-          className="resizer"
-          onMouseDown={resize}
-          // onClick={() => setWidth(500)}
-          // onMouseMove={event => {
-
-          // }}
-        >
-          {/* {ch ? <div onMouseMove={() => console.log('move')}>:</div> : null} */}
+        <div className="resizer" onMouseDown={setInitialX} onMouseUp={() => setCh(false)}>
+          :
         </div>
 
         <Field
           value={requestValue}
           onChange={setRequestValue}
           format={format}
-          width={`${60}%`}
+          // width={`100%`}
           classss={'response'}
           readOnly={true}
         />
