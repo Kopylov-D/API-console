@@ -1,5 +1,6 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment, useEffect, useMemo} from 'react';
 import {Controlled as Editor} from 'react-codemirror2';
+import classNames from 'classnames';
 
 import 'codemirror/addon/hint/javascript-hint';
 import 'codemirror/addon/edit/closebrackets';
@@ -11,43 +12,52 @@ import 'codemirror/lib/codemirror.css';
 import {Button} from './UI';
 
 const Field = props => {
-  const {value, onChange, format} = props;
-  // useEffect(() => {
-  //   const editor = CodeMirror.fromTextArea(document.querySelector('.textarea'));
-  // }, []);
+  const {value, onChange, format, width, classss, readOnly} = props;
+  useEffect(() => {
+  }, []);
   // const textRef = React.useRef();
   // useEffect(() => {}, []);
 
   // console.log(codemirror())
 
   const handleChange = (editor, data, value) => {
-    // editor.showTrailingSpace()
     onChange(value);
   };
+
+  const cons = () => {
+    console.log('data');
+  };
   return (
-    <Fragment>
+    <div className={classNames('field', `${classss}`)} style={{width}}>
       <Editor
-        className="field"
         value={value}
         onBeforeChange={handleChange}
         options={{
           mode: 'javascript',
           lint: true,
-          tabSize: 2,
+          tabSize: 4,
           lineWrapping: true,
-          autofocus: true,
+          lineNumbers: false,
+          // autofocus: true,
           autoCloseBrackets: true,
           showTrailingSpace: true,
           autocorrect: true,
+          fixedGutter: false,
           // viewportMargin: 100,
 
           // sizerWidth: '100px',
-          // readOnly: true
+          readOnly,
 
           // theme: 'monokai',
           // lineNumbers: true
         }}
-        display={{}}
+        editorDidMount={editor => {
+          // editor.setSize(width);
+        }}
+        onUpdate={(editor, event) => {}}
+        onGutterClick={(editor, lineNumber, gutter, event) => {
+          // console.log(editor)
+        }}
         // options={{
         // mode: 'xml',
         // theme: 'material',
@@ -56,9 +66,10 @@ const Field = props => {
         // onChange={(editor, data, value) => {
         //   console.log(editor.display.barHeight);
         //   console.log(beautify(value));
-          // editor.execCommand(selectAll)
+        // editor.execCommand(selectAll)
         // }}
-        // execCommand={selectAll}
+
+        // cursorActivity={cons}
       />
       {/* <div ref={textRef} className="field">
         <label htmlFor={'label'}>Запрос:</label>
@@ -66,8 +77,8 @@ const Field = props => {
         {/* <div> */}
       {/* <textarea  className="textarea"></textarea> */}
       {/* </div> */}
-      <Button onClick={format}>FormatTest</Button>
-    </Fragment>
+      {/* <Button onClick={format}>FormatTest</Button> */}
+    </div>
   );
 };
 
