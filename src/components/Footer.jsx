@@ -3,16 +3,17 @@ import {Button} from './UI';
 
 import sendsey from '../sendsay/sendsay';
 
-const Footer = () => {
+const Footer = (props) => {
   const test = () => {
-    sendsey.request({action: 'pong'}).then(res => {
+    sendsey.request({'action': 'pong'}).then(res => {
       console.log(res);
     });
   };
   return (
     <footer className="main__footer">
-      <Button>Отправить</Button>
+      <Button onClick={props.sendRequestHandler}>Отправить</Button>
       <Button onClick={test}>Тест</Button>
+      <Button onClick={test}>Тест1</Button>
       <div>@link-to-your-github</div>
       <button className="format-btn">
         <svg

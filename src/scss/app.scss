@@ -104,7 +104,8 @@ body {
 
   &__fields {
     display: flex;
-    width: 100%;
+    // align-items: stretch;
+    // width: 100%;
     // box-sizing: inline-box;
     // display: table;
 
@@ -112,7 +113,7 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    margin: 10px 5px;
+    margin: 10px 15px;
     top: $header-height + $history-height;
     bottom: $footer-height;
   }

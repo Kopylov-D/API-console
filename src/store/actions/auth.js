@@ -41,7 +41,7 @@ export function auth(login, sublogin, password) {
             action: 'sys.settings.get',
             list: ['about.id', 'about.owner.email', 'about.user'],
           })
-          .then(function (res) {
+          .then(res => {
             const authData = {
               session: sendsay.session,
               email: res.list['about.owner.email'][0],
