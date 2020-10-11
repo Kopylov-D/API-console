@@ -1,9 +1,31 @@
 @import '../variables';
 
 .main__history {
+  max-width: 100%;
+  display: flex;
   & div {
     display: flex;
   }
+}
+
+.main__request-data {
+  max-width: calc(100% - 50px);
+  // position: relative;
+
+  // z-index: 20;
+  overflow-x: auto;
+  // min-width: calc(100% - 50px);
+  // overflow-x: auto;
+  // scrollbar-width: 0;
+  // display: flex;
+
+  &::-webkit-scrollbar {
+    // display: none;
+    height: 0;
+    z-index: 1;
+
+  }
+  // overflow: hidden;
 }
 
 .main__close-btn {

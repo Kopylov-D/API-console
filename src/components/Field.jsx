@@ -1,24 +1,25 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {Controlled as Editor} from 'react-codemirror2';
-import classNames from 'classnames';
+import classNames from 'classnames'
 
 import 'codemirror/addon/hint/javascript-hint';
 import 'codemirror/addon/edit/closebrackets';
 
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/lint/json-lint'
 
 const Field = props => {
-  const {value, onChange, format, width, readOnly} = props;
+  const {value, onChange, width, readOnly, autoFocus, labelValue, isValidRequest} = props;
 
   const handleChange = (editor, data, value) => {
     onChange(value);
   };
 
   return (
-    <Fragment>
-      <div className='field' style={{width: `${width}%`}}>
-        <label>Запрос</label>
+
+      <div className={classNames('field', {'--invalid': !isValidRequest})} style={{width: `${width}%`}}>
+      <label>{labelValue}</label>
         <Editor
           value={value}
           onBeforeChange={handleChange}
@@ -28,11 +29,11 @@ const Field = props => {
             tabSize: 4,
             lineWrapping: true,
             lineNumbers: false,
-            // autofocus: true,
+            autofocus: autoFocus,
             autoCloseBrackets: true,
             showTrailingSpace: true,
             autocorrect: true,
-            fixedGutter: false,
+            // fixedGutter: false,
             // viewportMargin: 100,
 
             // sizerWidth: '100px',
@@ -50,7 +51,6 @@ const Field = props => {
           }}
         />
       </div>
-    </Fragment>
   );
 };
 

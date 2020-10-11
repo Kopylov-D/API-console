@@ -82,6 +82,9 @@ body {
 }
 
 .main {
+  position: absolute;
+  height: 100%;
+  width: 100%;
   &__header {
     display: flex;
     justify-content: space-between;
@@ -104,11 +107,6 @@ body {
 
   &__fields {
     display: flex;
-    // align-items: stretch;
-    // width: 100%;
-    // box-sizing: inline-box;
-    // display: table;
-
     // height: 100%;
     position: absolute;
     left: 0;

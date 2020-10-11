@@ -1,27 +1,38 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import classNames from 'classnames'
+import { useSelector, useDispatch } from 'react-redux';
+import { togglePopup } from '../store/actions/main';
 
-const Request = () => {
-  const action = false;
+const Request = ({isOk, action}) => {
+  const copy = false;
   const [popupIsOpen, setPopupIsOpen] = useState(false);
   const [wrong, setWrong] = useState(true);
 
-  const togglePopup = () => {
-    setPopupIsOpen(!popupIsOpen);
+  const {isOpenPopup} = useSelector(({main}) => main)
+  const dispatch = useDispatch()
+  console.log(isOpenPopup)
+
+  // useEffect (() => {
+  //   setPopupIsOpen(isOpenPopup)
+  // }, [])
+
+  const toggle = () => {
+    // setPopupIsOpen(!popupIsOpen);
+    dispatch(togglePopup())
   };
 
   return (
-    <div className={classNames('request', {wrong})}>
+    <div className={classNames('request', {'wrong': !isOk})}>
       <div className="request__content">
         <div className='request__indicator'></div>
         <div>
-          {action ? (
+          {copy ? (
             <span className="request__action">Скопировано</span>
           ) : (
-            <span>send</span>
+          <span>{action}</span>
           )}
         </div>
-        <button onClick={togglePopup}>
+        <button onClick={toggle}>
           <svg
             width="4"
             height="18"
@@ -35,17 +46,17 @@ const Request = () => {
         </button>
       </div>
 
-      {popupIsOpen ? (
+      {isOpenPopup ? (
         <Fragment>
-          <div className="backdrop" onClick={togglePopup}></div>
-          <div className="dropdown">
+          {/* <div className="backdrop" onClick={togglePopup}></div> */}
+          {/* <div className="dropdown"> */}
             <ul className="dropdown__content">
               <li>Выполнить</li>
               <li>Скопировать</li>
               <div></div>
               <li>Удалить</li>
             </ul>
-          </div>
+          {/* </div> */}
         </Fragment>
       ) : null}
     </div>

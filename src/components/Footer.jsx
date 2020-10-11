@@ -3,7 +3,7 @@ import {Button} from './UI';
 
 import sendsey from '../sendsay/sendsay';
 
-const Footer = (props) => {
+const Footer = ({sendRequestHandler, formatHandler, isLoading}) => {
   const test = () => {
     sendsey.request({'action': 'pong'}).then(res => {
       console.log(res);
@@ -11,11 +11,9 @@ const Footer = (props) => {
   };
   return (
     <footer className="main__footer">
-      <Button onClick={props.sendRequestHandler}>Отправить</Button>
-      <Button onClick={test}>Тест</Button>
-      <Button onClick={test}>Тест1</Button>
+      <Button isLoading={isLoading} onClick={sendRequestHandler}>Отправить</Button>
       <div>@link-to-your-github</div>
-      <button className="format-btn">
+      <button className="format-btn" onClick={formatHandler}>
         <svg
           width="24"
           height="24"
@@ -49,7 +47,7 @@ const Footer = (props) => {
             />
           </g>
         </svg>
-        <span>Форматировать</span>
+        <span >Форматировать</span>
       </button>
     </footer>
   );

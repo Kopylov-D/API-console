@@ -3,54 +3,79 @@ import {Field, Footer, Header, History} from '../components';
 import beautify from 'js-beautify';
 import useLocalStorage from '../hooks/useLocalStorage';
 import {useDispatch, useSelector} from 'react-redux';
-import {sendRequest} from '../store/actions/main';
+import {loadHistoryFromLocalStorage, sendRequest} from '../store/actions/main';
 import {useEffect} from 'react';
+import {isJson, formatJson} from '../utils/jsonUtils'
 
 const Main = () => {
-  const [requestValue, setRequestValue] = useLocalStorage();
   const [reqVal, setReqVal] = useState('');
-  const [savedWidth, setSavedWidth] = useLocalStorage('width', 45);
-  const [width, setWidth] = useState(50);
+  const [resVal, setResVal] = useState('');
+  const [isValidRequest, setIsValidRequest] = useState(true)
+  
+  const [savedWidth, setSavedWidth] = useLocalStorage('width', 50);
+  // const [savedHistory, setSavedHistory] = useLocalStorage('response-data', [])
+
+  const [width, setWidth] = useState();
   const [X, setX] = useState(0);
   const [ch, setCh] = useState(false);
   const [perc, setPerc] = useState(0);
 
   const dispatch = useDispatch();
-  const {responseValue} = useSelector(({main}) => main);
+  const {currentResponse, responseData, isLoading} = useSelector(({main}) => main);
 
   useEffect(() => {
     setWidth(savedWidth)
+    dispatch(loadHistoryFromLocalStorage())
   }, []);
 
-  let res = JSON.stringify(responseValue);
-  res = beautify(res)
+  useEffect(() => {
+      const formatResponse = formatJson(currentResponse)
+      setResVal(formatResponse)
+      // if (responseData.length > 0) {
+      //   setSavedHistory(responseData)
+      // }
+      // console.log(savedHistory)
+  }, [currentResponse])
 
   function sendRequestHandler() {
-    // console.log(typeof requestValue)
-    // let req = JSON.parse(requestValue)
-    let req = reqVal;
-    // console.log(typeof req);
-    req = JSON.parse(req);
-    // console.log(typeof req);
-
-    // let rrrrrr = JSON.parse(reqVal)
-    // console.log(typeof rrrrrr)
-
-    // dispatch(sendRequest(JSON.parse(requestValue)))
-    dispatch(sendRequest(req));
+    if (isJson(reqVal)) {
+      setIsValidRequest(true)
+      const req = JSON.parse(reqVal);
+      dispatch(sendRequest(req));
+    } else {
+      setIsValidRequest(false)
+    }
   }
 
-  const format = () => {
-    console.log('format');
-    console.log(beautify(requestValue));
-    setRequestValue(beautify(requestValue));
+  function showResponseHandler() {
+
+  }
+
+  const formatHandler = () => {
+    if (isJson(reqVal)) {
+      setIsValidRequest(true)
+      setReqVal(formatJson(reqVal))
+    } else {
+      setIsValidRequest(false)
+    }
   };
 
-  function setInitialX(e) {
+  function initialResize(e) {
     setCh(true);
     setX(e.clientX);
-    const docWidth = document.documentElement.clientWidth - 40;
+    // const docWidth = document.documentElement.clientWidth - 40;
+    // const windowWidth = window.innerWidth - 40
+    const docWidth = document.documentElement.scrollWidth - 40
+
     setPerc(docWidth / 100);
+  }
+
+  function stopResize() {
+    if (ch) {
+      setCh(false);
+      console.log('stop')
+      setSavedWidth(width);
+    }
   }
 
   function resize(e) {
@@ -67,27 +92,26 @@ const Main = () => {
   }
 
   return (
-    <div onMouseLeave={() => setCh(false)}>
+    <div className='main' onMouseLeave={() => setCh(false)}>
       <Header />
-      <History />
+      <History responseData={responseData}/>
       <div
         className="main__fields"
         onClick={onclick}
+        onMouseUp={stopResize}
         onMouseMove={resize}
-        onMouseUp={() => {
-          setCh(false);
-          setSavedWidth(width);
-        }}
       >
         <Field
           value={reqVal}
+          isValidRequest={isValidRequest}
+          labelValue={'Запрос:'}
           onChange={setReqVal}
-          format={format}
           width={width}
-
+          autoFocus={true}
         />
 
-        <div className="resizer" onMouseDown={setInitialX}>
+        <div className="resizer" onMouseDown={initialResize} >
+
           <svg
             width="4"
             height="18"
@@ -101,15 +125,14 @@ const Main = () => {
         </div>
 
         <Field
-          value={res}
+          value={resVal}
           width={100 - width}
-          // onChange={setReqVal}
-          format={format}
-
+          labelValue={'Ответ:'}
           readOnly={true}
+          isValidRequest={isValidRequest}
         />
       </div>
-      <Footer sendRequestHandler={sendRequestHandler} />
+      <Footer isLoading={isLoading} sendRequestHandler={sendRequestHandler} formatHandler={formatHandler}/>
     </div>
   );
 };
