@@ -3,7 +3,7 @@ import {Field, Footer, Header, History} from '../components';
 import beautify from 'js-beautify';
 import useLocalStorage from '../hooks/useLocalStorage';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadHistoryFromLocalStorage, sendRequest} from '../store/actions/main';
+import {changeCurrentResponse, clearHistory, loadHistoryFromLocalStorage, sendNewRequest} from '../store/actions/main';
 import {useEffect} from 'react';
 import {isJson, formatJson} from '../utils/jsonUtils'
 
@@ -41,10 +41,22 @@ const Main = () => {
     if (isJson(reqVal)) {
       setIsValidRequest(true)
       const req = JSON.parse(reqVal);
-      dispatch(sendRequest(req));
+      dispatch(sendNewRequest(req));
     } else {
       setIsValidRequest(false)
     }
+  }
+
+  function onClickResponseHandler(id) {
+    console.log(id)
+    dispatch(changeCurrentResponse(id))
+    const currentValue = currentResponse.response
+    setReqVal('enwkev')
+    console.log(currentValue)
+  }
+
+  function onClearHistory() {
+    dispatch(clearHistory())
   }
 
   function showResponseHandler() {
@@ -94,7 +106,10 @@ const Main = () => {
   return (
     <div className='main' onMouseLeave={() => setCh(false)}>
       <Header />
-      <History responseData={responseData}/>
+      <History 
+        responseData={responseData} 
+        onClearHistory={onClearHistory} 
+        onClickResponseHandler={onClickResponseHandler}/>
       <div
         className="main__fields"
         onClick={onclick}
@@ -132,7 +147,10 @@ const Main = () => {
           isValidRequest={isValidRequest}
         />
       </div>
-      <Footer isLoading={isLoading} sendRequestHandler={sendRequestHandler} formatHandler={formatHandler}/>
+      <Footer 
+        isLoading={isLoading} 
+        sendRequestHandler={sendRequestHandler} 
+        formatHandler={formatHandler}/>
     </div>
   );
 };

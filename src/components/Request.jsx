@@ -1,24 +1,37 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import classNames from 'classnames'
 import { useSelector, useDispatch } from 'react-redux';
-import { togglePopup } from '../store/actions/main';
+import { deleteResponse, sendRequestFromHistory, togglePopup } from '../store/actions/main';
 
-const Request = ({isOk, action}) => {
+const Request = ({id, isOk, action, onClickResponseHandler}) => {
   const copy = false;
   const [popupIsOpen, setPopupIsOpen] = useState(false);
   const [wrong, setWrong] = useState(true);
 
   const {isOpenPopup} = useSelector(({main}) => main)
   const dispatch = useDispatch()
-  console.log(isOpenPopup)
 
   // useEffect (() => {
   //   setPopupIsOpen(isOpenPopup)
   // }, [])
 
+  const runHandler = () => {
+   dispatch(sendRequestFromHistory(id)) 
+   setPopupIsOpen(!popupIsOpen);
+  }
+
+  const deleteResponseHandler = () => {
+    dispatch(deleteResponse(id))
+    setPopupIsOpen(!popupIsOpen);
+  }
+
+//  const onClickResponseHandler = () => {
+//   onClickResponseHandler()
+//  }
+
   const toggle = () => {
-    // setPopupIsOpen(!popupIsOpen);
-    dispatch(togglePopup())
+    setPopupIsOpen(!popupIsOpen);
+    // dispatch(togglePopup())
   };
 
   return (
@@ -26,10 +39,11 @@ const Request = ({isOk, action}) => {
       <div className="request__content">
         <div className='request__indicator'></div>
         <div>
+          
           {copy ? (
             <span className="request__action">Скопировано</span>
           ) : (
-          <span>{action}</span>
+          <span onClick={() => onClickResponseHandler(id)}>{action}</span>
           )}
         </div>
         <button onClick={toggle}>
@@ -46,15 +60,15 @@ const Request = ({isOk, action}) => {
         </button>
       </div>
 
-      {isOpenPopup ? (
+      {popupIsOpen ? (
         <Fragment>
           {/* <div className="backdrop" onClick={togglePopup}></div> */}
           {/* <div className="dropdown"> */}
             <ul className="dropdown__content">
-              <li>Выполнить</li>
+              <li onClick={runHandler}>Выполнить</li>
               <li>Скопировать</li>
               <div></div>
-              <li>Удалить</li>
+              <li onClick={deleteResponseHandler}>Удалить</li>
             </ul>
           {/* </div> */}
         </Fragment>

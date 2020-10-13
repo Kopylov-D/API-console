@@ -40,13 +40,17 @@
   justify-content: center;
   align-items: center;
   width: 10px;
-  cursor: col-resize;
+  cursor: pointer;
   user-select: none;
 
   &:hover {
     & svg {
       fill: rgba(#000000, 0.4);
     }
+  }
+
+  &:active {
+    cursor: col-resize;
   }
 
   & svg {

@@ -7,7 +7,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import { loadHistoryFromLocalStorage } from '../store/actions/main';
 
 
-const History = ({responseData}) => {
+const History = ({responseData, onClearHistory, onClickResponseHandler}) => {
 
   // const [savedHistory, setSavedHistory] = useLocalStorage('response-data', [])
 
@@ -32,12 +32,12 @@ const History = ({responseData}) => {
   return (
     <div className="main__history">
       <div className="main__request-data">
-        {responseData.map((response, index) => {
-        return(<Request key={index} isOk={response.isOk} action={response.action}/>)
+        {responseData.map(response => {
+        return(<Request key={response.id} isOk={response.isOk} action={response.action} id={response.id} onClickResponseHandler={onClickResponseHandler}/>)
         })}
 
       </div>
-      <button className="main__close-btn">
+      <button className="main__close-btn" onClick={onClearHistory}>
         <img src={closeBtn} alt="close-btn" />
       </button>
     </div>

@@ -1,4 +1,12 @@
-import {SEND_START, SEND_SUCCESS, SEND_ERROR, INIT, SET_CURRENT_RESPONSE, TOGGLE_POPUP} from '../actions/actionTypes';
+import {
+  SEND_START,
+  SEND_SUCCESS,
+  SEND_ERROR,
+  SET_CURRENT_RESPONSE,
+  TOGGLE_POPUP,
+  CLEAR_HISTORY,
+  UPDATE_RESPONSE_DATA,
+} from '../actions/actionTypes';
 
 const initialState = {
   isLoding: false,
@@ -22,33 +30,32 @@ export const mainReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         responseData: action.newResponseData,
-        // currentResponse: action.newResponseData[0].response,
       };
     case SEND_ERROR:
       return {
         ...state,
         isLoading: false,
         responseData: action.newResponseData,
-        // currentResponse: action.newResponseData[0].response,
       };
     case SET_CURRENT_RESPONSE:
       return {
         ...state,
-        // isLoading: false,
-        // responseData: action.newResponseData,
-        currentResponse: action.currentResponse
-      };
-    case INIT:
-      return {
-        ...state,
-        // isLoading: false,
-        responseData: action.newResponseData,
-        // currentResponse: action.newResponseData[0].response,
+        currentResponse: action.currentResponse,
       };
     case TOGGLE_POPUP:
       return {
         ...state,
-        isOpenPopup: !state.isOpenPopup
+        isOpenPopup: !state.isOpenPopup,
+      };
+    case CLEAR_HISTORY:
+      return {
+        ...state,
+        responseData: [],
+      };
+    case UPDATE_RESPONSE_DATA:
+      return {
+        ...state,
+        responseData: action.newResponseData,
       };
     default:
       return state;
