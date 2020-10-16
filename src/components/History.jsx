@@ -1,45 +1,31 @@
-import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux'
+import React from 'react';
 import {Request} from './';
 
-import closeBtn from '../assets/img/close-btn.svg';
-import useLocalStorage from '../hooks/useLocalStorage';
-import { loadHistoryFromLocalStorage } from '../store/actions/main';
-
-
-const History = ({responseData, onClearHistory, onClickResponseHandler}) => {
-
-  // const [savedHistory, setSavedHistory] = useLocalStorage('response-data', [])
-
-  // const {responseData} = useSelector(({main}) => main)
-  // const dispatch = useDispatch()
-
-  useEffect(() => {
-    // dispatch(loadHistoryFromLocalStorage(savedHistory))
-  }, [])
-
-// console.log('responseData', responseData)
-
-  // useEffect(() => {
-  //   console.log('changed')
-  //   console.log(responseData)
-
-  //     if (responseData.length > 0) {
-  //       setSavedHistory(responseData)
-  //     }
-  // })
+const History = ({responseData, onClearHistory, onClickRequestHandler, pasteRequest}) => {
 
   return (
     <div className="main__history">
       <div className="main__request-data">
         {responseData.map(response => {
-        return(<Request key={response.id} isOk={response.isOk} action={response.action} id={response.id} onClickResponseHandler={onClickResponseHandler}/>)
+        return(
+        <Request 
+          key={response.id} 
+          isOk={response.isOk} 
+          action={response.action} 
+          id={response.id} 
+          isOpenDropdown={response.isOpenDropdown}
+          onClickRequestHandler={onClickRequestHandler} 
+          pasteRequest={pasteRequest}/>)
         })}
 
       </div>
       <button className="main__close-btn" onClick={onClearHistory}>
-        <img src={closeBtn} alt="close-btn" />
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L19 19" stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M19 1L1 19" stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
       </button>
+      <div className="gradient"></div>
     </div>
   );
 };

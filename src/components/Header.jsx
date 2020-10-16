@@ -1,23 +1,25 @@
-import React from 'react';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
+
 import {Logo} from './UI';
 
 const Header = () => {
-  const [fullScreen, setFullScreen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const {authData} = useSelector(({auth}) => auth);
 
-  const enableFullScreen = () => {
-    if (fullScreen) {
-      setFullScreen(false);
-      document.exitFullscreen();
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      setIsFullScreen(true);
+        document.documentElement.requestFullscreen();
     } else {
-      setFullScreen(true);
-      document.documentElement.requestFullscreen();
+      if (document.exitFullscreen) {
+        setIsFullScreen(false);
+        document.exitFullscreen(); 
+      }
     }
-  };
+  }
 
   return (
     <header className="main__header">
@@ -65,8 +67,8 @@ const Header = () => {
           </Link>
         </div>
 
-        <button onClick={enableFullScreen}>
-          {fullScreen ? (
+        <button onClick={toggleFullScreen}>
+          {isFullScreen ? (
             <svg
               width="20"
               height="20"

@@ -1,30 +1,35 @@
 import sendsey from '../../sendsay/sendsay';
+import {formatJson} from '../../utils/jsonUtils';
 import {setID} from '../../utils/utils';
 import {
   SEND_START,
   SEND_SUCCESS,
-  SEND_ERROR,
   SET_CURRENT_RESPONSE,
-  TOGGLE_POPUP,
   CLEAR_HISTORY,
-  UPDATE_RESPONSE_DATA
+  UPDATE_RESPONSE_DATA,
 } from './actionTypes';
 
-function setResponseData(responseData, action, isOk, response) {
+function setResponseData(responseData, requestValue, isOk, response) {
+  const action = requestValue.action;
   const ind = responseData.findIndex(res => res.action === action);
   if (ind !== -1) {
     const elem = responseData[ind];
     responseData.splice(ind, 1);
-    const newArr = [elem, ...responseData];
-    return newArr;
+    const newResponseData = [elem, ...responseData];
+    return newResponseData;
   } else {
     const newResponse = {
       id: setID(),
       isOk,
       action,
       response,
+      requestValue,
+      isOpenDropdown: false,
     };
     responseData.unshift(newResponse);
+    if (responseData.length > 15) {
+      responseData.pop();
+    }
     return responseData;
   }
 }
@@ -34,43 +39,15 @@ export function sendNewRequest(requestValue) {
     dispatch(sendStart());
     const state = getState();
     const responseData = state.main.responseData;
-    // const session = sendsey.session;
-    // let action
-    // if (id) {
-    //   requestValue = responseData
-    // }
-    // const action = requestValue.action;
-    // let isOk;
-    // let res = await req(requestValue, responseData)
+
     const response = await sendRequest(requestValue, responseData);
     dispatch(sendSuccess(response.newResponseData));
     dispatch(setCurrentResponse(response.currentResponse));
-
-    // const request = {...requestValue, session};
-    // sendsey
-    //   .request(request)
-    //   .then(res => {
-    //     // console.log(res);
-    //     isOk = true;
-    //     const newResponseData = setResponseData(responseData, action, isOk, res);
-    //     localStorage.setItem('response-data', JSON.stringify(newResponseData));
-    //     dispatch(sendSuccess(newResponseData));
-    //     dispatch(setCurrentResponse(res));
-    //   })
-    //   .catch(e => {
-    //     isOk = false;
-    //     const newResponseData = setResponseData(responseData, action, isOk, e);
-    //     localStorage.setItem('response-data', JSON.stringify(newResponseData));
-    //     dispatch(sendError(newResponseData));
-    //     dispatch(setCurrentResponse(e));
-    //     console.log(e);
-    //   });
   };
 }
 
 async function sendRequest(requestValue, responseData) {
   const session = sendsey.session;
-  const action = requestValue.action;
   const request = {...requestValue, session};
   let isOk;
   let obj = {};
@@ -79,48 +56,36 @@ async function sendRequest(requestValue, responseData) {
     .request(request)
     .then(response => {
       isOk = true;
-      const newResponseData = setResponseData(responseData, action, isOk, response);
+      const newResponseData = setResponseData(responseData, requestValue, isOk, response);
       localStorage.setItem('response-data', JSON.stringify(newResponseData));
-      // dispatch(sendSuccess(newResponseData));
-      // dispatch(setCurrentResponse(response));
       obj = {
         newResponseData,
-        currentResponse: response,
+        currentResponse: {
+          response,
+          isOk,
+        },
       };
-      // return obj
-      // return ;
     })
-    .catch(error => {
+    .catch(response => {
       isOk = false;
-      const newResponseData = setResponseData(responseData, action, isOk, error);
+      const newResponseData = setResponseData(responseData, requestValue, isOk, response);
       localStorage.setItem('response-data', JSON.stringify(newResponseData));
-      // dispatch(sendError(newResponseData));
-      // dispatch(setCurrentResponse(response));
-      console.error(error);
+      console.error(response);
       obj = {
         newResponseData,
-        currentResponse: error,
+        currentResponse: {
+          response,
+          isOk,
+        },
       };
     });
 
   return obj;
 }
 
-export function changeCurrentResponse(id) {
-   return (dispatch, getState) => {
-    const state = getState();
-    const responseData = state.main.responseData;
-    // const currentResponse = state.main.currentResponse;
-    // console.log(currentResponse)
-    const currentResponse = responseData.find(response => response.id === id)
-    console.log(currentResponse)
-    dispatch(setCurrentResponse(currentResponse))
-
-   }
-}
-
 export function sendRequestFromHistory(id) {
   return async (dispatch, getState) => {
+    dispatch(sendStart());
     const state = getState();
     const responseData = state.main.responseData;
     const requestValue = responseData.find(response => response.id === id);
@@ -131,11 +96,30 @@ export function sendRequestFromHistory(id) {
   };
 }
 
-export function togglePopup() {
-  return dispatch => {
-    dispatch({
-      type: TOGGLE_POPUP,
+export function togglePopup(popupValue, id) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const responseData = state.main.responseData;
+    const newResponseData = responseData.map(res => {
+      if (res.id === id) {
+        res.isOpenDropdown = popupValue;
+      } else {
+        res.isOpenDropdown = false;
+      }
+      return res;
     });
+    dispatch(updateResponseData(newResponseData));
+  };
+}
+
+export function copyResponse(id) {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const responseData = state.main.responseData;
+    const requestValue = responseData.find(response => response.id === id);
+    const copiedData = formatJson(requestValue);
+
+    navigator.clipboard.writeText(copiedData);
   };
 }
 
@@ -172,13 +156,6 @@ function sendStart() {
   };
 }
 
-// function sendError(newResponseData) {
-//   return {
-//     type: SEND_ERROR,
-//     newResponseData,
-//   };
-// }
-
 function sendSuccess(newResponseData) {
   return {
     type: SEND_SUCCESS,
@@ -199,5 +176,3 @@ function setCurrentResponse(currentResponse) {
     currentResponse,
   };
 }
-
-

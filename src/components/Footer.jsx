@@ -1,18 +1,12 @@
 import React from 'react';
 import {Button} from './UI';
 
-import sendsey from '../sendsay/sendsay';
-
 const Footer = ({sendRequestHandler, formatHandler, isLoading}) => {
-  const test = () => {
-    sendsey.request({'action': 'pong'}).then(res => {
-      console.log(res);
-    });
-  };
+
   return (
     <footer className="main__footer">
       <Button isLoading={isLoading} onClick={sendRequestHandler}>Отправить</Button>
-      <div>@link-to-your-github</div>
+      <a href='https://github.com/Kopylov-D'>Kopylov</a>
       <button className="format-btn" onClick={formatHandler}>
         <svg
           width="24"

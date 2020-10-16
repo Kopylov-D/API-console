@@ -2,27 +2,20 @@
 @import './components/all';
 @import './variables';
 
-
-
-
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  // font-size: 16px;
   background: #f7f7f7;
   color: #0d0d0d;
 }
 
 .wrapper {
-  // max-width: 1170px;
   position: absolute;
   min-width: 640px;
   min-height: 520px;
   top: 0;
   right: 0;
   left: 0;
-  // height: 100%;
   bottom: 0;
   margin: 0 auto;
 }
@@ -79,6 +72,12 @@ body {
     font-size: 24px;
     margin-bottom: 20px;
   }
+
+  a {
+    text-transform: uppercase;
+    color: black;
+    text-decoration: underline;
+  }
 }
 
 .main {
@@ -101,13 +100,10 @@ body {
 
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
-
   }
 
   &__fields {
     display: flex;
-    // height: 100%;
     position: absolute;
     left: 0;
     right: 0;
@@ -129,5 +125,11 @@ body {
     justify-content: space-between;
 
     border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+    a {
+      text-transform: uppercase;
+      color: black;
+      text-decoration: underline;
+    }
   }
 }

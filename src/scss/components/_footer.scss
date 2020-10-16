@@ -14,6 +14,10 @@
     stroke: currentColor;
   }
 
+  &:active {
+    transform: $scale;
+  }
+
   &:hover {
     color: $c-blue;
     stroke: $c-blue;

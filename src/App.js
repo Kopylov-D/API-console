@@ -1,9 +1,10 @@
 import React, {Fragment, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, Switch, withRouter} from 'react-router';
-import { Logout } from './components';
 
+import {Logout} from './components';
 import {Auth, Main} from './containers';
+
 import {autoLogin} from './store/actions/auth';
 
 function App(props) {
@@ -17,7 +18,7 @@ function App(props) {
         {props.isAuth ? (
           <Fragment>
             <Route exact path="/" component={Main} />
-            <Route path="/logout" component={Logout}/>
+            <Route path="/logout" component={Logout} />
             <Redirect to="/" />
           </Fragment>
         ) : (

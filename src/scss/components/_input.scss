@@ -19,9 +19,10 @@
     margin-bottom: 20px;
     height: 40px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    // box-sizing: border-box;
     border-radius: 5px;
     padding: 5px;
+
+    font-size: 18px;
 
     &:hover {
       border: 1px solid rgba(0, 0, 0, 0.4);
@@ -35,9 +36,6 @@
 
   &.--invalid {
     color: $c-invalid;
-
-    & label {
-    }
 
     & input {
       border: 1px $c-invalid solid;

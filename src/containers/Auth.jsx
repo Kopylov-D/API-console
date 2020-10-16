@@ -115,22 +115,10 @@ const Auth = () => {
           Войти
         </Button>
       </form>
-      <footer>@link-to-your-github</footer>
+      <a href='https://github.com/Kopylov-D'>Kopylov</a>
     </div>
   );
 };
 
-// const mapStateToProps = state => {
-//   return {
-//     responseError: state.auth.responseError,
-//     isLoading: state.auth.isLoading,
-//   };
-// };
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     auth: (login, sublogin, password) => dispatch(auth(login, sublogin, password)),
-//   };
-// };
-
 export default Auth;
-// export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+

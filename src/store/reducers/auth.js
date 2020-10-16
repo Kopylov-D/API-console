@@ -16,7 +16,6 @@ export const authreducer = (state = initialState, action) => {
     case AUTH_SUCCESS:
       return {
         ...state,
-        // session: action.authData.session,
         isAuth: true,
         isLoading: false,
         authData: action.authData,
@@ -30,8 +29,7 @@ export const authreducer = (state = initialState, action) => {
       return {
         ...state,
         authData: {
-          // ...authData,
-          session: action.session
+          session: action.session,
         },
       };
     case AUTH_ERROR:

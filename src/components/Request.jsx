@@ -1,52 +1,54 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import classNames from 'classnames'
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteResponse, sendRequestFromHistory, togglePopup } from '../store/actions/main';
+import { useDispatch } from 'react-redux';
 
-const Request = ({id, isOk, action, onClickResponseHandler}) => {
-  const copy = false;
-  const [popupIsOpen, setPopupIsOpen] = useState(false);
-  const [wrong, setWrong] = useState(true);
+import { deleteResponse, sendRequestFromHistory, copyResponse, togglePopup } from '../store/actions/main';
 
-  const {isOpenPopup} = useSelector(({main}) => main)
+const Request = ({id, isOk, action, isOpenDropdown, onClickRequestHandler, pasteRequest}) => {
+  const [copy, setCopy] = useState(false);
+
   const dispatch = useDispatch()
 
-  // useEffect (() => {
-  //   setPopupIsOpen(isOpenPopup)
-  // }, [])
 
-  const runHandler = () => {
-   dispatch(sendRequestFromHistory(id)) 
-   setPopupIsOpen(!popupIsOpen);
+  const runResponseHandler = () => {
+    dispatch(sendRequestFromHistory(id)) 
+    pasteRequest(id)
+    toggleDropdown()
   }
 
   const deleteResponseHandler = () => {
     dispatch(deleteResponse(id))
-    setPopupIsOpen(!popupIsOpen);
+    toggleDropdown()
   }
 
-//  const onClickResponseHandler = () => {
-//   onClickResponseHandler()
-//  }
+  const copyResponseHandler = () => {
+    dispatch(copyResponse(id))
+    setCopy(true)
+    setTimeout(() => {
+      setCopy(false)
+    }, 1950)
+    toggleDropdown()
+  }
 
-  const toggle = () => {
-    setPopupIsOpen(!popupIsOpen);
-    // dispatch(togglePopup())
+  const toggleDropdown = () => {
+    dispatch(togglePopup(!isOpenDropdown, id))
   };
+
+  // const style = {
+    // position: copy ? 'absolute' : 'static',
+    // left: '30px'
+    // minWidth: copy ? '75px' : null
+  // }
 
   return (
     <div className={classNames('request', {'wrong': !isOk})}>
       <div className="request__content">
-        <div className='request__indicator'></div>
-        <div>
+        <div onClick={() => setCopy(copy => !copy)} className='request__indicator'></div>
+
+          <div className={classNames("request__copy", {'dnone': !copy})}>Скопировано</div>
+          <div className="request__action"  onClick={() => onClickRequestHandler(id)}>{action}</div>  
           
-          {copy ? (
-            <span className="request__action">Скопировано</span>
-          ) : (
-          <span onClick={() => onClickResponseHandler(id)}>{action}</span>
-          )}
-        </div>
-        <button onClick={toggle}>
+        <button onClick={toggleDropdown}>
           <svg
             width="4"
             height="18"
@@ -60,17 +62,15 @@ const Request = ({id, isOk, action, onClickResponseHandler}) => {
         </button>
       </div>
 
-      {popupIsOpen ? (
+      {isOpenDropdown ? (
         <Fragment>
-          {/* <div className="backdrop" onClick={togglePopup}></div> */}
-          {/* <div className="dropdown"> */}
+          <div className={classNames("backdrop", {'dblock': isOpenDropdown})}  onClick={toggleDropdown}></div>
             <ul className="dropdown__content">
-              <li onClick={runHandler}>Выполнить</li>
-              <li>Скопировать</li>
+              <li onClick={runResponseHandler}>Выполнить</li>
+              <li onClick={copyResponseHandler}>Скопировать</li>
               <div></div>
               <li onClick={deleteResponseHandler}>Удалить</li>
             </ul>
-          {/* </div> */}
         </Fragment>
       ) : null}
     </div>

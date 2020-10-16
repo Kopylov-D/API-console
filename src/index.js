@@ -4,10 +4,11 @@ import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {applyMiddleware, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
+
 import App from './App';
 
-import './scss/app.scss';
 import rootReducer from './store/reducers/rootReducer';
+import './scss/app.scss';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

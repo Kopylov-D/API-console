@@ -1,30 +1,6 @@
 import sendsey from '../../sendsay/sendsay';
 import sendsay from '../../sendsay/sendsay';
-import {
-  AUTH_SUCCESS,
-  AUTH_START,
-  AUTH_ERROR,
-  AUTH_LOGOUT,
-  // AUTH_RESTORE_SESSION,
-} from './actionTypes';
-
-// async function getAuthData() {
-//   let authData = {};
-//   sendsay
-//     .request({
-//       action: 'sys.settings.get',
-//       list: ['about.id', 'about.owner.email', 'about.user'],
-//     })
-//     .then(function (res) {
-//       authData = {
-//         session: sendsay.session,
-//         email: res.list['about.owner.email'][0],
-//         sublogin: res.list['about.id'],
-//       };
-//           document.cookie = `sendsay_session=${authData.session}`;
-//     });
-//   return authData;
-// }
+import {AUTH_SUCCESS, AUTH_START, AUTH_ERROR, AUTH_LOGOUT} from './actionTypes';
 
 export function auth(login, sublogin, password) {
   return async dispatch => {
@@ -45,7 +21,6 @@ export function auth(login, sublogin, password) {
             const authData = {
               session: sendsay.session,
               email: res.list['about.owner.email'][0],
-              // sublogin: res.list['about.id'],
               sublogin,
             };
             document.cookie = `sendsay_session=${authData.session}; max-age=3600`;
@@ -53,16 +28,6 @@ export function auth(login, sublogin, password) {
             document.cookie = `sendsay_sublogin=${authData.sublogin}; max-age=3600`;
             dispatch(authSuccess(authData));
           });
-
-        // sendsay
-        //   .request({
-        //     action: 'pong',
-        //   })
-        //   .then(res => {
-        //     console.log(res);
-        //     console.log(sendsay.getUsername());
-        //     // console.log(res.list['about.id']);
-        //   });
       })
       .catch(error => {
         const responseError = {id: error.id, explain: error.explain};
@@ -83,12 +48,6 @@ export function authSuccess(authData) {
     authData,
   };
 }
-// export function authRestoreSession(session) {
-//   return {
-//     type: AUTH_RESTORE_SESSION,
-//     session,
-//   };
-// }
 
 export function authError(responseError) {
   return {

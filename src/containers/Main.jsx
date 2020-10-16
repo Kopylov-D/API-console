@@ -1,24 +1,24 @@
-import React, {useState} from 'react';
-import {Field, Footer, Header, History} from '../components';
-import beautify from 'js-beautify';
-import useLocalStorage from '../hooks/useLocalStorage';
+import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {changeCurrentResponse, clearHistory, loadHistoryFromLocalStorage, sendNewRequest} from '../store/actions/main';
-import {useEffect} from 'react';
+
+import {Field, Footer, Header, History} from '../components';
+import useLocalStorage from '../hooks/useLocalStorage';
 import {isJson, formatJson} from '../utils/jsonUtils'
 
+import {clearHistory, loadHistoryFromLocalStorage, sendNewRequest} from '../store/actions/main';
+
 const Main = () => {
-  const [reqVal, setReqVal] = useState('');
-  const [resVal, setResVal] = useState('');
+  const [requestValue, setRequestValuel] = useState('');
+  const [responseValue, setResponseValue] = useState('');
   const [isValidRequest, setIsValidRequest] = useState(true)
+  const [isValidResponse, setIsValidResponse] = useState(true)
   
   const [savedWidth, setSavedWidth] = useLocalStorage('width', 50);
-  // const [savedHistory, setSavedHistory] = useLocalStorage('response-data', [])
 
   const [width, setWidth] = useState();
   const [X, setX] = useState(0);
-  const [ch, setCh] = useState(false);
-  const [perc, setPerc] = useState(0);
+  const [isResizing, setIsResizing] = useState(false);
+  const [pxInPercent, setPxInPercent] = useState(0);
 
   const dispatch = useDispatch();
   const {currentResponse, responseData, isLoading} = useSelector(({main}) => main);
@@ -29,87 +29,76 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-      const formatResponse = formatJson(currentResponse)
-      setResVal(formatResponse)
-      // if (responseData.length > 0) {
-      //   setSavedHistory(responseData)
-      // }
-      // console.log(savedHistory)
+    if (currentResponse) {
+      setIsValidResponse(currentResponse.isOk)
+      const formatResponse = formatJson(currentResponse.response)
+      setResponseValue(formatResponse)
+    }
   }, [currentResponse])
 
   function sendRequestHandler() {
-    if (isJson(reqVal)) {
+    if (isJson(requestValue)) {
       setIsValidRequest(true)
-      const req = JSON.parse(reqVal);
-      dispatch(sendNewRequest(req));
+      const request = JSON.parse(requestValue);
+      dispatch(sendNewRequest(request));
     } else {
       setIsValidRequest(false)
     }
   }
 
-  function onClickResponseHandler(id) {
-    console.log(id)
-    dispatch(changeCurrentResponse(id))
-    const currentValue = currentResponse.response
-    setReqVal('enwkev')
-    console.log(currentValue)
+  function onClickRequestHandler(id) {
+    pasteRequest(id)
   }
 
   function onClearHistory() {
     dispatch(clearHistory())
   }
 
-  function showResponseHandler() {
-
+  function pasteRequest(id) {
+    const requestValue = responseData.find(res => res.id === id).requestValue
+    setRequestValuel(formatJson(requestValue))
   }
 
-  const formatHandler = () => {
-    if (isJson(reqVal)) {
+  function formatHandler() {
+    if (isJson(requestValue)) {
       setIsValidRequest(true)
-      setReqVal(formatJson(reqVal))
+      setRequestValuel(formatJson(requestValue))
     } else {
       setIsValidRequest(false)
     }
   };
 
   function initialResize(e) {
-    setCh(true);
+    setIsResizing(true);
     setX(e.clientX);
-    // const docWidth = document.documentElement.clientWidth - 40;
-    // const windowWidth = window.innerWidth - 40
     const docWidth = document.documentElement.scrollWidth - 40
-
-    setPerc(docWidth / 100);
+    setPxInPercent(docWidth / 100);
   }
 
   function stopResize() {
-    if (ch) {
-      setCh(false);
-      console.log('stop')
+    if (isResizing) {
+      setIsResizing(false);
       setSavedWidth(width);
     }
   }
 
   function resize(e) {
-    if (ch) {
-      const x = e.clientX;
-      setX(x);
-      const delta = (x - X) / perc;
+    if (isResizing) {
+      const currentX = e.clientX;
+      setX(currentX);
+      const delta = (currentX - X) / pxInPercent;
       setWidth(width => width + delta);
     }
   }
 
-  function onclick(e) {
-    // console.log(e.clientX);
-  }
-
   return (
-    <div className='main' onMouseLeave={() => setCh(false)}>
+    <div className='main' >
       <Header />
       <History 
         responseData={responseData} 
         onClearHistory={onClearHistory} 
-        onClickResponseHandler={onClickResponseHandler}/>
+        onClickRequestHandler={onClickRequestHandler}
+        pasteRequest={pasteRequest}/>
       <div
         className="main__fields"
         onClick={onclick}
@@ -117,12 +106,13 @@ const Main = () => {
         onMouseMove={resize}
       >
         <Field
-          value={reqVal}
-          isValidRequest={isValidRequest}
+          value={requestValue}
+          isValid={isValidRequest}
           labelValue={'Запрос:'}
-          onChange={setReqVal}
+          onChange={setRequestValuel}
           width={width}
           autoFocus={true}
+          cursorBlinkRate={500}
         />
 
         <div className="resizer" onMouseDown={initialResize} >
@@ -140,11 +130,12 @@ const Main = () => {
         </div>
 
         <Field
-          value={resVal}
-          width={100 - width}
+          value={responseValue}
+          isValid={isValidResponse}
           labelValue={'Ответ:'}
+          width={100 - width}
           readOnly={true}
-          isValidRequest={isValidRequest}
+          cursorBlinkRate={-1}
         />
       </div>
       <Footer 
