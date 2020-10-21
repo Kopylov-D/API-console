@@ -22,5 +22,5 @@
 * Управление состоянием с помощью redux
 
 ## Демонстрация: 
-![API.gif](https://s8.gifyu.com/images/API.gif)
+[![API3d6499c38e916038.gif](https://s8.gifyu.com/images/API3d6499c38e916038.gif)](https://gifyu.com/image/8Q3N)
 
