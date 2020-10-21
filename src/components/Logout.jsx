@@ -1,17 +1,17 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {Redirect} from 'react-router';
-import {logout} from '../store/actions/auth';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router';
+import { logout } from '../store/actions/auth';
 
 const Logout = () => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(logout());
-  }, []);
+	useEffect(() => {
+		dispatch(logout());
+	}, []);
 
-  return <Redirect to="/auth" />;
+	return <Redirect to="/auth" />;
 };
 
 export default Logout;

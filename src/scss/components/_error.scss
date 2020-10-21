@@ -1,21 +1,21 @@
 @import '../variables';
 
 .error {
-  display: flex;
-  align-items: flex-start;
-  background: rgba(207, 44, 0, 0.1);
-  border-radius: 5px;
-  padding: 10px 15px;
-  margin-bottom: 20px;
+	display: flex;
+	align-items: flex-start;
+	background: rgba(207, 44, 0, 0.1);
+	border-radius: 5px;
+	padding: 10px 15px;
+	margin-bottom: 20px;
 
-  & > div {
-    margin-left: 10px;
-    color: $c-red;
-    font-size: 18px;
+	& > div {
+		margin-left: 10px;
+		color: $c-red;
+		font-size: 18px;
 
-    & footer {
-      font-size: $f-small;
-      opacity: 0.5;
-    }
-  }
+		& footer {
+			font-size: $f-small;
+			opacity: 0.5;
+		}
+	}
 }

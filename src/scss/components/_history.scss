@@ -1,51 +1,51 @@
 @import '../variables';
 
 .main__request-data {
-  max-width: calc(100% - 60px);
-  position: absolute;
-  box-sizing: border-box;
-  top: $header-height;
-  left: 15px;
-  right: 50px;
-  display: flex;
-  overflow-x: auto;
+	max-width: calc(100% - 60px);
+	position: absolute;
+	box-sizing: border-box;
+	top: $header-height;
+	left: 15px;
+	right: 50px;
+	display: flex;
+	overflow-x: auto;
 
-  &::-webkit-scrollbar {
-    height: 0;
-    z-index: 1;
-  }
+	&::-webkit-scrollbar {
+		height: 0;
+		z-index: 1;
+	}
 }
 
 .main__close-btn {
-  position: absolute;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: $history-height;
-  width: 50px;
+	position: absolute;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: $history-height;
+	width: 50px;
 
-  z-index: 30;
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
+	z-index: 30;
+	border-left: 1px solid rgba(0, 0, 0, 0.2);
 
-  &:active {
-    transform: $scale;
-  }
+	&:active {
+		transform: $scale;
+	}
 }
 
 .gradient {
-  position: absolute;
-  right: 50px;
-  height: 48px;
-  width: 20px;
-  z-index: 30;
+	position: absolute;
+	right: 50px;
+	height: 48px;
+	width: 20px;
+	z-index: 30;
 
-  pointer-events: none;
+	pointer-events: none;
 
-  background: rgb(246, 246, 246);
-  background: linear-gradient(
-    90deg,
-    rgba(246, 246, 246, 0) 0,
-    rgba(246, 246, 246, 1) 100%
-  );
+	background: rgb(246, 246, 246);
+	background: linear-gradient(
+		90deg,
+		rgba(246, 246, 246, 0) 0,
+		rgba(246, 246, 246, 1) 100%
+	);
 }

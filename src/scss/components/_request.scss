@@ -1,145 +1,147 @@
 @import 'variables';
 
 .request {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin: 10px 5px;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-end;
+	margin: 10px 5px;
 
-  &__content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 30px;
-    background: #ffffff;
-    min-width: inherit;
-    cursor: pointer;
+	&__content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		justify-content: space-between;
+		position: relative;
+		height: 30px;
+		background: #ffffff;
+		min-width: 126px;
+		cursor: pointer;
 
-    z-index: 30;
+		z-index: 30;
 
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		border-radius: 5px;
 
-    & :active {
-      transform: $scale;
-    }
+		& :active {
+			transform: $scale;
+		}
 
-    & button {
-      display: flex;
-      justify-content: center;
-      width: 24px;
+		& button {
+			display: flex;
+			justify-content: center;
+			width: 24px;
 
-      z-index: 30;
+			z-index: 30;
 
-      &:hover {
-        & svg {
-          fill: rgba(#000000, 0.4);
-        }
-      }
-    }
+			&:hover {
+				& svg {
+					fill: rgba(#000000, 0.4);
+				}
+			}
+		}
 
-    & svg {
-      fill: rgba(#000000, 0.2);
-    }
+		& svg {
+			fill: rgba(#000000, 0.2);
+		}
 
-    &:hover {
-      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 5px;
-    }
-  }
+		&:hover {
+			box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+			border-radius: 5px;
+		}
+	}
 
-  &.wrong {
-    .request__indicator {
-      background: $c-red;
-    }
-  }
+	&.wrong {
+		.request__indicator {
+			background: $c-red;
+		}
+	}
 
-  &__indicator {
-    width: 10px;
-    height: 10px;
-    background: $c-green;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-    margin: 0 10px;
-  }
+	&__indicator {
+		width: 10px;
+		height: 10px;
+		background: $c-green;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		border-radius: 50%;
+		margin: 0 10px;
+	}
 
-  &__copy {
-    position: absolute;
-    height: 20px;
-    padding: 0 5px;
-    z-index: 40;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	&__copy {
+		position: absolute;
+		height: 20px;
+		padding: 0 5px;
+		z-index: 40;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: center;
 
-    background: #f6f6f6;
-    border-radius: 5px;
-    font-size: 12px;
+		background: #f6f6f6;
+		border-radius: 5px;
+		font-size: 12px;
 
-    animation: copy 2s linear;
+		animation: copy 2s linear;
 
-    @keyframes copy {
-      80% {
-        transform: translateY(0%);
-        opacity: 1;
-      }
+		@keyframes copy {
+			80% {
+				transform: translateY(0%);
+				opacity: 1;
+			}
 
-      100% {
-        transform: translateY(-100%);
-        opacity: 0;
-      }
-    }
-  }
+			100% {
+				transform: translateY(-100%);
+				opacity: 0;
+			}
+		}
+	}
 }
 
 .dropdown__content {
-  background: #ffffff;
-  top: 90px;
-  z-index: 30;
+	background: #ffffff;
+	top: 90px;
+	z-index: 30;
 
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 3px;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 3px;
 
-  & li {
-    cursor: pointer;
-    padding: 10px 15px;
-    margin: 5px 0;
+	& li {
+		cursor: pointer;
+		padding: 10px 15px;
+		margin: 5px 0;
 
-    &:last-child {
-      &:hover {
-        background: $c-red;
-      }
-    }
+		&:last-child {
+			&:hover {
+				background: $c-red;
+			}
+		}
 
-    &:hover {
-      background: $c-blue;
-      color: #ffffff;
-    }
-  }
+		&:hover {
+			background: $c-blue;
+			color: #ffffff;
+		}
+	}
 
-  & div {
-    width: 100%;
-    height: 1px;
-    background-color: rgba(#000000, 0.2);
-  }
+	& div {
+		width: 100%;
+		height: 1px;
+		background-color: rgba(#000000, 0.2);
+	}
 }
 
 .backdrop {
-  position: fixed;
-  display: none;
-  z-index: 10;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background: transparent;
+	position: fixed;
+	display: none;
+	z-index: 10;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: transparent;
 }
 
 .dnone {
-  display: none;
+	display: none;
 }
 
 .dblock {
-  display: block;
+	display: block;
 }

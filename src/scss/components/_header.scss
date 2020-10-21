@@ -1,85 +1,85 @@
 @import '../variables';
 
 .main__header {
-  & h1 {
-    margin-left: 20px;
-    font-size: 20px;
-    font-weight: 400;
-  }
+	& h1 {
+		margin-left: 20px;
+		font-size: 20px;
+		font-weight: 400;
+	}
 
-  @media (max-width: 800px) {
-    & h1 {
-      display: none;
-    }
-  }
+	@media (max-width: 800px) {
+		& h1 {
+			display: none;
+		}
+	}
 
-  & div {
-    display: flex;
-    align-items: center;
-  }
+	& div {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .main__user-panel {
-  & div:first-child {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    padding: 5px 15px;
-  }
+	& div:first-child {
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		border-radius: 5px;
+		padding: 5px 15px;
+	}
 
-  & div {
-    margin-right: 23px;
-  }
+	& div {
+		margin-right: 23px;
+	}
 
-  & a {
-    color: inherit;
-  }
+	& a {
+		color: inherit;
+	}
 
-  & button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px;
+	& button {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 7px;
 
-    &:hover {
-      color: $c-blue;
-      stroke: $c-blue;
-    }
+		&:hover {
+			color: $c-blue;
+			stroke: $c-blue;
+		}
 
-    &:focus {
-      box-shadow: 0 0 0 2px rgba($color: $c-blue, $alpha: 0.5);
-      border-radius: 7px;
-    }
+		&:focus {
+			box-shadow: 0 0 0 2px rgba($color: $c-blue, $alpha: 0.5);
+			border-radius: 7px;
+		}
 
-    &:active {
-      transform: $scale;
-    }
+		&:active {
+			transform: $scale;
+		}
 
-    &:first-child {
-      width: 100px;
+		&:first-child {
+			width: 100px;
 
-      &:hover {
-        color: $c-red;
-        stroke: $c-red;
-      }
+			&:hover {
+				color: $c-red;
+				stroke: $c-red;
+			}
 
-      &:focus {
-        box-shadow: 0 0 0 2px rgba($color: $c-red, $alpha: 0.5);
-        border-radius: 7px;
-      }
-    }
-  }
+			&:focus {
+				box-shadow: 0 0 0 2px rgba($color: $c-red, $alpha: 0.5);
+				border-radius: 7px;
+			}
+		}
+	}
 
-  @media (max-width: 800px) {
-    & button:first-child {
-      width: 40px;
-    }
+	@media (max-width: 800px) {
+		& button:first-child {
+			width: 40px;
+		}
 
-    & span {
-      display: none;
-    }
-  }
+		& span {
+			display: none;
+		}
+	}
 
-  & svg {
-    stroke: currentColor;
-  }
+	& svg {
+		stroke: currentColor;
+	}
 }

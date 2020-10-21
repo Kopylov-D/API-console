@@ -1,30 +1,30 @@
 @import '../variables';
 
 .format-btn {
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  padding: 4px;
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+	padding: 4px;
 
-  background: inherit;
-  border: none;
+	background: inherit;
+	border: none;
 
-  & svg {
-    margin-right: 11px;
-    stroke: currentColor;
-  }
+	& svg {
+		margin-right: 11px;
+		stroke: currentColor;
+	}
 
-  &:active {
-    transform: $scale;
-  }
+	&:active {
+		transform: $scale;
+	}
 
-  &:hover {
-    color: $c-blue;
-    stroke: $c-blue;
-  }
+	&:hover {
+		color: $c-blue;
+		stroke: $c-blue;
+	}
 
-  &:focus {
-    box-shadow: 0 0 0 2px rgba($color: $c-blue, $alpha: 0.5);
-    border-radius: 7px;
-  }
+	&:focus {
+		box-shadow: 0 0 0 2px rgba($color: $c-blue, $alpha: 0.5);
+		border-radius: 7px;
+	}
 }
